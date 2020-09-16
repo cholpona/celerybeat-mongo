@@ -53,7 +53,7 @@ class TzAwareCrontab(crontab):
         The last_run_at argument needs to be timezone aware.
         """
         # convert last_run_at to the schedule timezone
-        last_run_at = last_run_at.astimezone(self.tz)
+        last_run_at = last_run_at.astimezone(pytz.timezone(self.tz))
 
         rem_delta = self.remaining_estimate(last_run_at)
         rem = max(rem_delta.total_seconds(), 0)
