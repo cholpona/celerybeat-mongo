@@ -30,7 +30,7 @@ PERIODS = ('days', 'hours', 'minutes', 'seconds', 'microseconds')
 class TzAwareCrontab(crontab):
     def __init__(
             self, minute='*', hour='*', day_of_week='*',
-            day_of_month='*', month_of_year='*', tz='UTC', app=None
+            day_of_month='*', month_of_year='*', tz='Etc/UTC', app=None
     ):
         """Overwrite Crontab constructor to include a timezone argument."""
         self.tz = tz
