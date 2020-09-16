@@ -11,7 +11,7 @@ from celery import current_app
 import celery.schedules
 import pytz
 from celery.schedules import crontab
-import namedtuple
+from collections import namedtuple
 
 schedstate = namedtuple('schedstate', ('is_due', 'next'))
 
