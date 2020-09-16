@@ -54,7 +54,7 @@ class TzAwareCrontab(crontab):
         """
         # convert last_run_at to the schedule timezone
         if not last_run_at.tzinfo:
-            last_run_at = last_run_at.replace(tzinf=pytz.utc)
+            last_run_at = last_run_at.replace(tzinfo=pytz.utc)
         last_run_at = last_run_at.astimezone(pytz.timezone(self.tz))
 
         rem_delta = self.remaining_estimate(last_run_at)
