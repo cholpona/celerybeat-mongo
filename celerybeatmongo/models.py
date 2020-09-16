@@ -192,6 +192,8 @@ class PeriodicTask(DynamicDocument):
              _refs=None, save_condition=None, signal_kwargs=None, **kwargs):
         if not self.date_creation:
             self.date_creation = pytz.utc.localize(datetime.utcnow())
+        if not self.date_creation.tzinfo:
+            self.date_creation = pytz.utc.localize(self.date_creation)
         self.date_changed = pytz.utc.localize(datetime.utcnow())
         super(PeriodicTask, self).save(force_insert, validate, clean,
                                        write_concern, cascade, cascade_kwargs, _refs,
