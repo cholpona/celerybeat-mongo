@@ -35,7 +35,7 @@ class TzAwareCrontab(crontab):
         """Overwrite Crontab constructor to include a timezone argument."""
         self.tz = tz
 
-        nowfun = self.nowfunc
+        nowfun = self.nowfun
         super(TzAwareCrontab, self).__init__(
             minute=minute, hour=hour, day_of_week=day_of_week,
             day_of_month=day_of_month,
