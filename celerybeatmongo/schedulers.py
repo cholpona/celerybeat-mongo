@@ -15,6 +15,7 @@ from celery.utils.log import get_logger
 from celery import current_app
 
 
+
 logger = get_logger(__name__)
 
 

@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 from mongoengine import *
 from celery import current_app
 import celery.schedules
+import pytz
 
 
 def get_periodic_task_collection():
@@ -79,7 +80,8 @@ class PeriodicTask(DynamicDocument):
                                      hour=self.hour,
                                      day_of_week=self.day_of_week,
                                      day_of_month=self.day_of_month,
-                                     month_of_year=self.month_of_year)
+                                     month_of_year=self.month_of_year,
+                                            nowfun=self.nowfun)
 
         def __unicode__(self):
             rfield = lambda f: f and str(f).replace(' ', '') or '*'
