@@ -53,7 +53,7 @@ class TzAwareCrontab(crontab):
         The last_run_at argument needs to be timezone aware.
         """
         # convert last_run_at to the schedule timezone
-        print('last_run at',last_run_at)
+        print('last_run at',last_run_at, last_run_at.tzinfo)
         last_run_at = last_run_at.astimezone(pytz.timezone(self.tz))
 
         rem_delta = self.remaining_estimate(last_run_at)
@@ -193,7 +193,10 @@ class PeriodicTask(DynamicDocument):
         if not self.date_creation:
             self.date_creation = pytz.utc.localize(datetime.utcnow())
         if not self.date_creation.tzinfo:
-            self.date_creation = pytz.utc.localize(self.date_creation)
+            if self.crontab.tz:
+                self.date_creation = pytz.timezone(self.crontab.tz).localize(self.date_creation)
+            else:
+                self.date_creation = pytz.utc.localize(self.date_creation)
         self.date_changed = pytz.utc.localize(datetime.utcnow())
         super(PeriodicTask, self).save(force_insert, validate, clean,
                                        write_concern, cascade, cascade_kwargs, _refs,
