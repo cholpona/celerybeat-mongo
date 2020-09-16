@@ -64,6 +64,12 @@ class PeriodicTask(DynamicDocument):
         day_of_week = StringField(default='*', required=True)
         day_of_month = StringField(default='*', required=True)
         month_of_year = StringField(default='*', required=True)
+        tz = StringField(default='UTC')
+
+        def nowfun(self):
+            return pytz.timezone(self.tz).normalize(
+                pytz.utc.localize(datetime.utcnow())
+            )
 
         meta = {'allow_inheritance': True}
 
