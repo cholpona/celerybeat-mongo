@@ -60,7 +60,7 @@ class TzAwareCrontab(crontab):
         rem = max(rem_delta.total_seconds(), 0)
         due = rem == 0
         if due:
-            rem_delta = self.remaining_estimate(self.now())
+            rem_delta = self.remaining_estimate(self.utcnow())
             rem = max(rem_delta.total_seconds(), 0)
         return schedstate(due, rem)
 
@@ -191,8 +191,8 @@ class PeriodicTask(DynamicDocument):
              write_concern=None, cascade=None, cascade_kwargs=None,
              _refs=None, save_condition=None, signal_kwargs=None, **kwargs):
         if not self.date_creation:
-            self.date_creation = datetime.now()
-        self.date_changed = datetime.now()
+            self.date_creation = datetime.utcnow()
+        self.date_changed = datetime.utcnow()
         super(PeriodicTask, self).save(force_insert, validate, clean,
                                        write_concern, cascade, cascade_kwargs, _refs,
                                        save_condition, signal_kwargs, **kwargs)
