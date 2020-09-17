@@ -30,7 +30,7 @@ PERIODS = ('days', 'hours', 'minutes', 'seconds', 'microseconds')
 class TzAwareCrontab(crontab):
     def __init__(
             self, minute='*', hour='*', day_of_week='*',
-            day_of_month='*', month_of_year='*', tz='Etc/UTC', app=None
+            day_of_month='*', month_of_year='*', tz=pytz.timezone('Etc/UTC'), app=None
     ):
         """Overwrite Crontab constructor to include a timezone argument."""
         self.tz = tz
@@ -54,8 +54,8 @@ class TzAwareCrontab(crontab):
         """
         # convert last_run_at to the schedule timezone
         if not last_run_at.tzinfo:
-            last_run_at = last_run_at.replace(tzinfo=pytz.utc)
-        last_run_at = last_run_at.astimezone(pytz.timezone(self.tz))
+            last_run_at = last_run_at.replace(tzinfo=self.tz)
+        last_run_at = last_run_at.astimezone(self.tz)
 
         rem_delta = self.remaining_estimate(last_run_at)
         rem = max(rem_delta.total_seconds(), 0)
@@ -133,7 +133,7 @@ class PeriodicTask(DynamicDocument):
         day_of_week = StringField(default='*', required=True)
         day_of_month = StringField(default='*', required=True)
         month_of_year = StringField(default='*', required=True)
-        tz = StringField(default='UTC')
+        tz = DynamicField(pytz.timezone('Etc/UTC'))
 
 
 
