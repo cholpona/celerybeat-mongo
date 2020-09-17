@@ -207,6 +207,7 @@ class PeriodicTask(DynamicDocument):
     def clean(self):
         """validation by mongoengine to ensure that you only have
         an interval or crontab schedule, but not both simultaneously"""
+        print(self)
         if self.interval and self.crontab:
             msg = 'Cannot define both interval and crontab schedule.'
             raise ValidationError(msg)
