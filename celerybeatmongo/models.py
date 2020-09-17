@@ -27,7 +27,7 @@ def get_periodic_task_collection():
 PERIODS = ('days', 'hours', 'minutes', 'seconds', 'microseconds')
 
 
-class TzAwareCrontab(crontab):
+class TzAwareCrontab(crontab,EmbeddedDocument):
     def __init__(
             self, minute='*', hour='*', day_of_week='*',
             day_of_month='*', month_of_year='*', tz=pytz.timezone('Etc/UTC'), app=None
