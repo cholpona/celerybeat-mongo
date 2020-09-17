@@ -133,7 +133,7 @@ class PeriodicTask(DynamicDocument):
         day_of_week = StringField(default='*', required=True)
         day_of_month = StringField(default='*', required=True)
         month_of_year = StringField(default='*', required=True)
-        tz = DynamicField(pytz.timezone('Etc/UTC'))
+        tz = DynamicField(default = pytz.timezone('Etc/UTC'))
 
 
 
