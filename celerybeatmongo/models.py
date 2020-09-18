@@ -59,45 +59,7 @@ class PeriodicTask(DynamicDocument):
                 return 'every {0.period_singular}'.format(self)
             return 'every {0.every} {0.period}'.format(self)
 
-
-
-    class Crontab(EmbeddedDocument):
-        """Crontab-like schedule.
-
-        Example:  Run every hour at 0 minutes for days of month 10-15
-        minute="0", hour="*", day_of_week="*", day_of_month="10-15", month_of_year="*"
-        """
-        minute = StringField(default='*', required=True)
-        hour = StringField(default='*', required=True)
-        day_of_week = StringField(default='*', required=True)
-        day_of_month = StringField(default='*', required=True)
-        month_of_year = StringField(default='*', required=True)
-        tz = DynamicField(default = pytz.timezone('Etc/UTC'))
-
-
-
-        meta = {'allow_inheritance': True}
-
-        @property
-        def schedule(self):
-            crontab = TzAwareCrontab(
-                minute=self.minute,
-                hour=self.hour,
-                day_of_week=self.day_of_week,
-                day_of_month=self.day_of_month,
-                month_of_year=self.month_of_year,
-                tz=self.tz
-            )
-            return crontab
-
-        def __unicode__(self):
-            rfield = lambda f: f and str(f).replace(' ', '') or '*'
-            return '{0} {1} {2} {3} {4} (m/h/d/dM/MY)'.format(
-                rfield(self.minute), rfield(self.hour), rfield(self.day_of_week),
-                rfield(self.day_of_month), rfield(self.month_of_year),
-            )
-
-    class TzAwareCrontab(crontab, Crontab):
+    class TzAwareCrontab(crontab,EmbeddedDocument):
         def __init__(
                 self, minute='*', hour='*', day_of_week='*',
                 day_of_month='*', month_of_year='*', tz=pytz.timezone('Etc/UTC'), app=None
@@ -106,6 +68,7 @@ class PeriodicTask(DynamicDocument):
             self.tz = tz
 
             nowfun = self.nowfun
+
             super(TzAwareCrontab, self).__init__(
                 minute=minute, hour=hour, day_of_week=day_of_week,
                 day_of_month=day_of_month,
@@ -160,6 +123,44 @@ class PeriodicTask(DynamicDocument):
                         and other.minute == self.minute
                         and other.tz == self.tz)
             return NotImplemented
+
+    class Crontab(EmbeddedDocument):
+        """Crontab-like schedule.
+
+        Example:  Run every hour at 0 minutes for days of month 10-15
+        minute="0", hour="*", day_of_week="*", day_of_month="10-15", month_of_year="*"
+        """
+        minute = StringField(default='*', required=True)
+        hour = StringField(default='*', required=True)
+        day_of_week = StringField(default='*', required=True)
+        day_of_month = StringField(default='*', required=True)
+        month_of_year = StringField(default='*', required=True)
+        tz = DynamicField(default = pytz.timezone('Etc/UTC'))
+
+
+
+        meta = {'allow_inheritance': True}
+
+        @property
+        def schedule(self):
+            crontab = TzAwareCrontab(
+                minute=self.minute,
+                hour=self.hour,
+                day_of_week=self.day_of_week,
+                day_of_month=self.day_of_month,
+                month_of_year=self.month_of_year,
+                tz=self.tz
+            )
+            return crontab
+
+        def __unicode__(self):
+            rfield = lambda f: f and str(f).replace(' ', '') or '*'
+            return '{0} {1} {2} {3} {4} (m/h/d/dM/MY)'.format(
+                rfield(self.minute), rfield(self.hour), rfield(self.day_of_week),
+                rfield(self.day_of_month), rfield(self.month_of_year),
+            )
+
+
 
     name = StringField(unique=True)
     task = StringField(required=True)
