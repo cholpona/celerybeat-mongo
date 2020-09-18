@@ -82,6 +82,13 @@ class TzAwareCrontab(crontab, EmbeddedDocument):
                                  self._orig_month_of_year,
                                  self.tz), None)
 
+    def __unicode__(self):
+        rfield = lambda f: f and str(f).replace(' ', '') or '*'
+        return '{0} {1} {2} {3} {4} {5} (m/h/d/dM/MY)'.format(
+            rfield(self.minute), rfield(self.hour), rfield(self.day_of_week),
+            rfield(self.day_of_month), rfield(self.month_of_year), rfield(self.tz)
+        )
+
     def __eq__(self, other):
         if isinstance(other, crontab):
             return (other.month_of_year == self.month_of_year
