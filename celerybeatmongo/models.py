@@ -180,14 +180,20 @@ class TzAwareCrontab(crontab, PeriodicTask.Crontab):
             self, minute='*', hour='*', day_of_week='*',
             day_of_month='*', month_of_year='*', tz=pytz.timezone('Etc/UTC'), app=None,  *args, **kwargs
     ):
-
+        PeriodicTask.Crontab.__init__(self, minute='*', hour='*', day_of_week='*',
+            day_of_month='*', month_of_year='*', tz=pytz.timezone('Etc/UTC'),  *args, **kwargs)
         nowfun = self.nowfun
-        """Overwrite Crontab constructor to include a timezone argument."""
-        super(TzAwareCrontab, self).__init__(
-            minute=minute, hour=hour, day_of_week=day_of_week,
+        crontab.__init(self,minute=minute, hour=hour, day_of_week=day_of_week,
             day_of_month=day_of_month,
             month_of_year=month_of_year, nowfun=nowfun, app=app,*args, **kwargs
+
         )
+        """Overwrite Crontab constructor to include a timezone argument."""
+        # super(TzAwareCrontab, self).__init__(
+        #     minute=minute, hour=hour, day_of_week=day_of_week,
+        #     day_of_month=day_of_month,
+        #     month_of_year=month_of_year, nowfun=nowfun, app=app,*args, **kwargs
+        # )
         self.tz = tz
 
 
