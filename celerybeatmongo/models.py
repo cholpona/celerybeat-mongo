@@ -175,7 +175,7 @@ class PeriodicTask(DynamicDocument):
         return fmt.format(self)
 
 
-class TzAwareCrontab(crontab, EmbeddedDocument, PeriodicTask.Crontab):
+class TzAwareCrontab(crontab, PeriodicTask.Crontab):
     def __init__(
             self, minute='*', hour='*', day_of_week='*',
             day_of_month='*', month_of_year='*', tz=pytz.timezone('Etc/UTC'), app=None
